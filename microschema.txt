@@ -1,0 +1,134 @@
+key for microschema: a concise notation for data and object modeling (YAML-inspired)
+
+author: jonathan s. gilbert, (c) 2014-2016
+
+license: artistic license 2.0 (see LICENSE in this repository)
+
+preface: 
+
+    - in this key, \ refers to any type symbol... but in an actual microschema, replace \ with the below types
+
+    - every symbol below is implicitly assumed to be followed by a word. the word would be the name of the property in the class or the name of a column in a database, etc. for instance you might say: '#.# price' which is could be equivalent to an Objective C property declaration like this: '@property float price;' 
+
+    - this version of microschema has no facility for representing weak/strong or owned/unowned for the purposes of memory management in languages like Swift or Objective C, but could be refactored to support that (I am considering it...)
+
+    - functional stuff is evaluated left-to-right; many of the symbols are used in a manner where it's like, stuff \ more stuff, but this is left implicit in the key for the sake of parsimony right now (may change this later if people find it too confusing)
+    
+microschema key:
+
+    types:
+
+            null/no value
+        %   bool
+        #   int
+        #.#   float
+        ?   string
+        &   ordered collection && hashed by array &? hash by string key &# hash by number key > DB ref (owning)
+        <   DB ref (mapped) +name embedded doc @ ObjectType
+        TM   MongoDate
+        ∆   duration/age
+        -   undefined/any
+        { _ , _ }   set
+        
+    instance implementation relations:
+
+        †   this (self-ref)
+        Ø   object instance of (when type is a class, this appends via dot or caret syntax)
+        √   value of (appends after a property type to describe use in implementation)
+        ◊   key of (this) (i.e. database key, GUID, etc.)
+
+    inheritance/ownership relations:
+
+        ¶   or π parent/owner of (this)
+        ∏   grandparent/owner of owner of (this)
+        ®   root object
+        ¢   child(ren)/possession(s) of (this)
+
+    tree-traversal syntax (for ownership or inheritance relationships):
+
+        dot-syntax: grandparent.parent.child
+        caret-syntax: child^parent^grandparent (reverse of dot-syntax)
+    
+    flow control:
+
+        œ   foreach
+        /   otherwise
+        ...   if-then or result from (e.g. % customerWantsToBuy == %√TRUE ... ƒ-goToShoppingCart(customerCart)
+        ...   / if-then-else (e.g. 
+        ( )   nesting
+        ' '   deferment (callbacks)
+
+    
+    functional:
+
+        ƒ\    function of (usage: ƒ\ name(argument)  ...  , or ƒ\ name(argument,argument) ... , just ƒ\ name(), or just ƒ name()) 
+        how to designate return types of ƒ:
+            --    double-hyphen (or long em-hyphen) when appended between ƒ and a property name like ƒ--name means the function returns an object of the same type as the property 
+            ƒ  returns nothing (void)
+            ƒ% returns bool ƒ—name returns int value of property named "name" (type of this line's value-type)
+            ƒ? returns a string
+        ∑   sum of every
+        ~   concatenation (with ~ as delimiter)
+        §   search based on
+        ∞   total sum of 
+        Œ   each of / of each
+        + - • ÷ =   maths
+        ==   equality 
+        !=   inequality
+    
+    property modifiers:
+
+        ;    optional (property does not exist if null)
+
+    logic:
+    
+        !    not
+    
+    star-syntax:
+    
+        ∞ *name   sum of every value of variable "name" of every object in input reachable by valid dot-syntax of "name"
+
+    usage examples:
+    
+        ƒ    foo(†.bar.Ø) = this would refer to a function in an object that takes as its argument an instance of class bar that belongs to itself bar must be < or >
+        A / B   if A return A, otherwise return B
+        A ... B   if A return B
+        A ... B / C   if A then if B return B, otherwise return C (A ... B) / C if A then return B, otherwise return C
+    
+    mac keyboard shortcuts:
+
+        ¢ = option-4
+        ∞ = option-5
+        § = option-6
+        ¶ = option-7
+        • = option-8
+        ÷ = option-/
+        ƒ = option-f
+        ∑ = option-w
+        ◊ = option-shift-v √ = option-v
+        ∆ = option-j
+        Ø = option-shift-O (letter) † = option-t
+        Œ = option-shift-Q
+        œ = option-Q
+        ... = option-;
+    
+    meta-mappings:
+
+        meta declarations: 
+    
+            --    instruction 
+            ~~    data
+        
+        meta-instructions:
+    
+            A ¬ B    substitute every "A" with "B"
+    
+        note:    Don't ask what meta-mappings are. They are specifically for when you don't have to ask what they are.
+
+    comments syntax:
+    
+        // comment 
+        
+        /* comment */
+        
+        note: maybe we'll add some kind of @ syntax for using comments to document stuff later
