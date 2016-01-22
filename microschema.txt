@@ -6,13 +6,13 @@ license: artistic license 2.0 (see LICENSE in this repository)
 
 preface: 
 
-    - in this key, \ refers to any type symbol... but in an actual microschema, replace \ with the below types
+    - in this key, _ refers to any type symbol... fill in the blank :D... but in an actual microschema, replace _ with the below types
 
     - every symbol below is implicitly assumed to be followed by a word. the word would be the name of the property in the class or the name of a column in a database, etc. for instance you might say: '#.# price' which is could be equivalent to an Objective C property declaration like this: '@property float price;' 
 
     - this version of microschema has no facility for representing weak/strong or owned/unowned for the purposes of memory management in languages like Swift or Objective C, but could be refactored to support that (I am considering it...)
 
-    - functional stuff is evaluated left-to-right; many of the symbols are used in a manner where it's like, stuff \ more stuff, but this is left implicit in the key for the sake of parsimony right now (may change this later if people find it too confusing)
+    - functional stuff is evaluated left-to-right; many of the symbols are used in a manner where it's like, stuff _ more stuff, but this is left implicit in the key for the sake of parsimony right now (may change this later if people find it too confusing)
     
 microschema key:
 
@@ -61,7 +61,7 @@ microschema key:
     
     functional:
 
-        ƒ\    function of (usage: ƒ\ name(argument)  ...  , or ƒ\ name(argument,argument) ... , just ƒ\ name(), or just ƒ name()) 
+        ƒ_    function of (usage: ƒ_ name(argument)  ...  , or ƒ_ name(argument,argument) ... , just ƒ_ name(), or just ƒ name()) 
         how to designate return types of ƒ:
             --    double-hyphen (or long em-hyphen) when appended between ƒ and a property name like ƒ--name means the function returns an object of the same type as the property 
             ƒ  returns nothing (void)
