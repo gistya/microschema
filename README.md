@@ -1,5 +1,5 @@
 # microschema
-A strongly-typed, concise, YAML-inspired, human-readable notation &amp; for modeling data and objects
+a concise notation for data and object modeling (YAML-inspired)
 
 Intro
 -----
@@ -86,6 +86,12 @@ FAQ
 ---
 
 Most of these questions are ones that I frequently ask myself about microschema.
+
+   - Q: Why do you call it "YAML-inspired"? 
+   - A: Because it's not YAML-compliant. 
+  	 
+   - Q: Why isn't it YAML-compliant?
+   - A: Because YAML won't let it be. YAML has all kinds of not cool restrictions on what characters you can use for what. Put a : or # in the wrong place and you're screwed in YAML. So.. microschema looks like YAML and follows YAML's structuring rules but it's not YAML. MAYAML (microschema ain't YAML).
 
    - Q: Why use the ? symbol used instead of the $ symbol for strings? 
    - A: To most people, $ implies currency. Also, it's a commonly used symbol at the start of variable names, and I wanted to leave open the option to put in the actual variable names *including the $ sign* so I could distinguish variable name from descriptions. 
