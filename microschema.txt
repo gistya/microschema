@@ -53,8 +53,24 @@ microschema key:
 
         œ   foreach
         /   otherwise
-        ...   if-then or result from (e.g. % customerWantsToBuy == %√TRUE ... ƒ-goToShoppingCart(customerCart)
-        ...   / if-then-else (e.g. 
+        ...   if-then or result from
+            examples: 
+                 % customerWantsToBuy ... ƒ-goToShoppingCart(customerCart) //if customerWantsToBy then run the func
+                 ? customerName √Meta World Peace ... ƒ-sayHiToMeta //if customerName is that then say hello world :P
+        ^^^   then-if or result to 
+            examples:
+                 % customerWantsToBuy 
+                     ^^^ ƒ-buyNowButtonClick //if click on buy now then set to true
+                 % customerWantsToBuy 
+                     !^^^ ƒ-backButtonClick //if click on back button then set to false
+                 ? customerName 
+                     √joe ^^^ ƒ-setCustomerNameTo("joe") //if function setCustomerNameTo runs with arg "joe" 
+        ...   / if-then-else 
+            example:
+                 % customerWantsToBuy 
+                     ^^^ ƒ-buyNowButtonClick //if click on buy now then set to true
+                        /!^^^ //otherwise set it to false :P
+
         ( )   nesting
         ' '   deferment (callbacks)
 
