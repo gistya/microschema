@@ -60,16 +60,15 @@ microschema key:
         ^^^   then-if or result to 
             examples:
                  % customerWantsToBuy 
-                     ^^^ ƒ-buyNowButtonClick //if click on buy now then set to true
+                     √1 ^^^ ƒ-buyNowButtonClick //if click on buy now then set to true happens in that function
                  % customerWantsToBuy 
-                     !^^^ ƒ-backButtonClick //if click on back button then set to false
+                     √0 ^^^ ƒ-backButtonClick //if click on back button then set to false happens in that function
                  ? customerName 
                      √joe ^^^ ƒ-setCustomerNameTo("joe") //if function setCustomerNameTo runs with arg "joe" 
         ...   / if-then-else 
             example:
                  % customerWantsToBuy 
-                     ^^^ ƒ-buyNowButtonClick //if click on buy now then set to true
-                        /!^^^ //otherwise set it to false :P
+                     √1/0 ^^^ ƒ-buyNowButtonClick //if click on buy now then set to true, otherwise it remains zero
 
         ( )   nesting
         ' '   deferment (callbacks)
@@ -83,6 +82,7 @@ microschema key:
             ƒ  returns nothing (void)
             ƒ% returns bool ƒ—name returns int value of property named "name" (type of this line's value-type)
             ƒ? returns a string
+            ƒ- within the function (used if a value gets set during the run of a function, but not by its return)
         ∑   sum of every
         ~   concatenation (with ~ as delimiter)
         §   search based on
