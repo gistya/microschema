@@ -29,16 +29,13 @@ microschema key:
         ™   date
         ∆   duration/age
         -   undefined/any
-        { _ , _ }   set
+        ‡   error
+        Ç   class (generic type)
         
-    instance implementation relations:
+        ClassName   when there is no symbol in microschema to represent a type, use the ClassName 
+                    (must be capitalized camel case)
 
-        †   this (self-ref)
-        î   ibid (same as previous ref on parent line)
-        Ø   object instance of (when type is a class, this appends via dot or caret syntax)
-        √   value of (appends after a property type to describe use in implementation)
-            valiation (" timeStamp √% = timeStamp is a string but it must be formatted as regex [0-9]+\.[0-9]+
-        ◊   key of (this) (i.e. database key, GUID, etc.)
+        _,_ set/array
 
     data model relations:
 
@@ -48,7 +45,10 @@ microschema key:
         =>> owning (many to many)
         <   mapped relation (substitute for > above)
         ><  self reference(s) (substitute for > above)
-        
+        √   value of (appends after a property type to describe use in implementation) and/or
+            validation (" timeStamp √% = timeStamp is a string but it must be formatted as regex [0-9]+\.[0-9]+
+        ◊   key of (this) (i.e. database key, GUID, etc.)
+
     inheritance relations
     
         ¶   super class
@@ -62,8 +62,11 @@ microschema key:
 
     object-graph dot/caret tree-traversal syntax:
 
-        dot-syntax: grandparent.parent.child
-        caret-syntax: child^parent^grandparent (reverse of dot-syntax)
+        † this
+        î ibid (same as previous ref on parent line)
+        Ø object instance of (when type is a class, this appends via dot or caret syntax)
+        . dot-syntax: grandparent.parent.child
+        ^ caret-syntax: child^parent^grandparent (reverse of dot-syntax)
     
     flow control:
 
@@ -91,23 +94,38 @@ microschema key:
 
     
     functional:
-
-        ƒ_    function of (usage: ƒ_ name(argument)  ...  , or ƒ_ name(argument,argument) ... , just ƒ_ name(), or just ƒ name()) 
-        how to designate return types of ƒ:
-            --    double-hyphen (or long em-hyphen) when appended between ƒ and a property name like ƒ--name means the function returns an object of the same type as the property 
-            ƒ  returns nothing (void)
-            ƒ? returns bool ƒ—name returns int value of property named "name" (type of this line's value-type)
-            ƒ" returns a string
-            ƒ- within the function (used if a value gets set during the run of a function, but not by its return)
+    
+        ƒ-X         string X is name of function
+                    e.g. ƒ-insertRecord is a function that inserts a record
+    
+        argument:
+        
+            _ ƒ     any value/object can be passed to the function
+            " ƒ     function takes a single string as argument
+            "-X ƒ   string with argument name X is passed to the function
+            _,_ ƒ   set of arguments in {} is passed to function
+            
+        return:
+        
+            ƒ Ç     double-hyphen (or long em-hyphen) preceded by class _ ƒ and a property name 
+                         like name--ƒ means the function returns an object of the same type as the property 
+            ƒ       returns nothing (void)
+            ƒ ?     returns bool ƒ—name returns int value of property named "name" (type of this line's value-type)
+            ƒ "     returns a string
+            ƒ [_,_] things in the set in [] are vars passed to the function that get set in the function (used if a value gets set during the run of a function, but not by its return)
+        
         ∑   sum of every
         ~   concatenation (with ~ as delimiter)
         §   search based on
         ∞   total sum of 
         Œ   each of / of each
-        + - • ÷ =   maths
+        + - • ÷ =  maths
+    
+    comparison operators
         ==   equality 
         !=   inequality
-    
+        < =< >= > you know wtf these are, dude.
+        
     property modifiers:
 
         ;    optional (property does not exist if null)
@@ -134,6 +152,7 @@ microschema key:
         ∞ = option-5
         § = option-6
         ¶ = option-7
+        ‡ = option-shift-7
         • = option-8
         ÷ = option-/
         å = option-a
