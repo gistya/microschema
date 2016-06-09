@@ -46,7 +46,8 @@ microschema key:
         =>  owning (many to one)
         ->> owning (one to many)
         =>> owning (many to many)
-        <   mapped relation (substitute for < above)
+        <   mapped relation (substitute for > above)
+        ><  self reference(s) (substitute for > above)
         
     inheritance relations
     
