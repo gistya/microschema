@@ -1,5 +1,7 @@
 key for microschema: a concise notation for data and object modeling (YAML-inspired)
 
+VERSION 2.0
+
 author: jonathan s. gilbert, (c) 2014-2016
 
 license: artistic license 2.0 (see LICENSE in this repository)
@@ -8,7 +10,7 @@ preface:
 
     - in this key, _ refers to any type symbol... fill in the blank :D... but in an actual microschema, replace _ with the below types
 
-    - every symbol below is implicitly assumed to be followed by a word. the word would be the name of the property in the class or the name of a column in a database, etc. for instance you might say: '#.# price' which is could be equivalent to an Objective C property declaration like this: '@property float price;' 
+    - every symbol below is implicitly assumed to be followed by a word. the word would be the name of the property in the class or the name of a column in a database, etc. for instance you might say: '% price' which is could be equivalent to an Objective C property declaration like this: '@property float price;' 
 
     - this version of microschema has no facility for representing weak/strong or owned/unowned for the purposes of memory management in languages like Swift or Objective C, but could be refactored to support that (I am considering it...)
 
@@ -19,13 +21,12 @@ microschema key:
     types:
 
             null/no value
-        %   bool
+        ?   bool
         #   int
-        #.#   float
-        ?   string
-        &   ordered collection && hashed by array &? hash by string key &# hash by number key > DB ref (owning)
-        <   DB ref (mapped) +name embedded doc @ ObjectType
-        TM   MongoDate
+        %   float
+        "   string
+        :   dictionary (":% = dict of floats keyed by strings) 
+        ™   date
         ∆   duration/age
         -   undefined/any
         { _ , _ }   set
@@ -38,14 +39,26 @@ microschema key:
         √   value of (appends after a property type to describe use in implementation)
         ◊   key of (this) (i.e. database key, GUID, etc.)
 
-    inheritance/ownership relations:
+    data model relations:
 
-        ¶   or π parent/owner of (this)
-        ∏   grandparent/owner of owner of (this)
-        ®   root object
-        ¢   child(ren)/possession(s) of (this)
+        ->  owning (one to one)
+        =>  owning (many to one)
+        ->> owning (one to many)
+        =>> owning (many to many)
+        <   mapped relation (substitute for < above)
+        
+    inheritance relations
+    
+        ¶   super class
+        ∏   super-super class
+        
+    class flags 
+    
+        å   abstract flag
+           constructor/factory
+        ¢   concrete/implementation flag
 
-    tree-traversal syntax (for ownership or inheritance relationships):
+    object-graph dot/caret tree-traversal syntax:
 
         dot-syntax: grandparent.parent.child
         caret-syntax: child^parent^grandparent (reverse of dot-syntax)
@@ -53,23 +66,23 @@ microschema key:
     flow control:
 
         œ   foreach
-        /   otherwise
-        ...   if-then or result from
+        ... [if-condition] ... [then-action/result]
             examples: 
-                 % customerWantsToBuy ... ƒ-goToShoppingCart(customerCart) //if customerWantsToBy then run the func
-                 ? customerName √Meta World Peace ... ƒ-sayHiToMeta //if customerName is that then say hello world :P
-        ^^^   then-if or result to 
+                 ? customerWantsToBuy ... ƒ-goToShoppingCart(customerCart) //if customerWantsToBy then run the func
+                 " customerName (Meta World Peace ... ƒ-sayHiToMeta) //if customerName is that then say hello world :P
+        ^^^ [then-action/result] ^^^ [if-condition] (reverse of ...)
             examples:
-                 % customerWantsToBuy 
-                     √1 ^^^ ƒ-buyNowButtonClick //if click on buy now then set to true happens in that function
-                 % customerWantsToBuy 
-                     √0 ^^^ ƒ-backButtonClick //if click on back button then set to false happens in that function
-                 ? customerName 
-                     √joe ^^^ ƒ-setCustomerNameTo("joe") //if function setCustomerNameTo runs with arg "joe" 
-        ...   / if-then-else 
-            example:
-                 % customerWantsToBuy 
-                     √1/0 ^^^ ƒ-buyNowButtonClick //if click on buy now then set to true, otherwise it remains zero
+                 ? customerWantsToBuy 
+                     1 ^^^ ƒ-buyNowButtonClick //if click on buy now then set to true happens in that function
+                 ? customerWantsToBuy 
+                     0 ^^^ ƒ-backButtonClick //if click on back button then set to false happens in that function
+                 " customerName 
+                     joe ^^^ ƒ-setCustomerNameTo("joe") //if function setCustomerNameTo runs with arg "joe" 
+        / otherwise (else that comes after the condition not before) 
+            example: //if click on buy now then set to true, otherwise it remains zero
+                 ? customerWantsToBuy 
+                     1 ^^^ ƒ-buyNowButtonClick 
+                     0 /
 
         ( )   nesting
         ' '   deferment (callbacks)
@@ -81,8 +94,8 @@ microschema key:
         how to designate return types of ƒ:
             --    double-hyphen (or long em-hyphen) when appended between ƒ and a property name like ƒ--name means the function returns an object of the same type as the property 
             ƒ  returns nothing (void)
-            ƒ% returns bool ƒ—name returns int value of property named "name" (type of this line's value-type)
-            ƒ? returns a string
+            ƒ? returns bool ƒ—name returns int value of property named "name" (type of this line's value-type)
+            ƒ" returns a string
             ƒ- within the function (used if a value gets set during the run of a function, but not by its return)
         ∑   sum of every
         ~   concatenation (with ~ as delimiter)
@@ -107,22 +120,25 @@ microschema key:
 
     usage examples:
     
-        ƒ    foo(†.bar.Ø) = this would refer to a function in an object that takes as its argument an instance of class bar that belongs to itself bar must be < or >
-        A / B   if A return A, otherwise return B
-        A ... B   if A return B
-        A ... B / C   if A then if B return B, otherwise return C (A ... B) / C if A then return B, otherwise return C
+        ƒ foo(†.Bar.Ø) func foo takes this object's instance of class bar as argument
+        A / B         A or B
+        A ... B       if A then B
+        A ... B / C   if A then B otherwise C
     
     mac keyboard shortcuts:
 
+        ™ = option-2
         ¢ = option-4
         ∞ = option-5
         § = option-6
         ¶ = option-7
         • = option-8
         ÷ = option-/
+        å = option-a
         ƒ = option-f
         ∑ = option-w
-        ◊ = option-shift-v √ = option-v
+        ◊ = option-shift-v 
+        √ = option-v
         ∆ = option-j
         Ø = option-shift-O (letter) † = option-t
         Œ = option-shift-Q
@@ -133,8 +149,8 @@ microschema key:
 
         meta declarations: 
     
-            --    instruction 
-            ~~    data
+            --      instruction 
+            ~~      data
         
         meta-instructions:
     
