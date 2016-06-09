@@ -37,6 +37,7 @@ microschema key:
         î   ibid (same as previous ref on parent line)
         Ø   object instance of (when type is a class, this appends via dot or caret syntax)
         √   value of (appends after a property type to describe use in implementation)
+            valiation (" timeStamp √% = timeStamp is a string but it must be formatted as regex [0-9]+\.[0-9]+
         ◊   key of (this) (i.e. database key, GUID, etc.)
 
     data model relations:
